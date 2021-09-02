@@ -7,6 +7,9 @@
     "strict": true,
     "skipLibCheck": true,
     "removeComments": true,
-    "importHelpers": true
-  }
+    "importHelpers": true,
+    "outDir": "./lib"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/**/*.test.ts"]
 }
