@@ -8,7 +8,8 @@
     "skipLibCheck": true,
     "removeComments": true,
     "importHelpers": true,
-    "outDir": "./lib"
+    "outDir": "./dist",
+    "exactOptionalPropertyTypes": true
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./src/**/*.test.ts"]
