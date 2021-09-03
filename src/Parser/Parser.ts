@@ -1,11 +1,6 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
 import fs from "fs/promises";
 
-export type RefPrice = [string, number];
-export type RefPriceParser = (
-  content: string
-) => RefPrice | [string, RefPrice[]];
-
 export class IcpParser {
   async parse(
     pdfPath: string,
