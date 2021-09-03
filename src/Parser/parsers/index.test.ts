@@ -1,8 +1,8 @@
 import {
-  getCitiesRefPrice,
-  getLowQualityRefPrice,
-  getPremiumRefPrice,
-} from "./parsers";
+  citiesRefPriceParser,
+  lowQualityRefPriceParser,
+  premiumRefPriceParser,
+} from ".";
 
 const premiumRefPricePlaceholder = "{{premiumRefPrice}}";
 const lowQualityRefPricePlaceholder = "{{lowQualityRefPrice}}";
@@ -16,13 +16,13 @@ const lowQualityRefPriceTestCases = [123_456, 12_345, 1_234, 123].map(
 const genericRefPriceParsers = [
   {
     name: "premium",
-    parser: getPremiumRefPrice,
+    parser: premiumRefPriceParser,
     cases: premiumRefPriceTestCases,
     placeholder: premiumRefPricePlaceholder,
   },
   {
     name: "lowQuality",
-    parser: getLowQualityRefPrice,
+    parser: lowQualityRefPriceParser,
     cases: lowQualityRefPriceTestCases,
     placeholder: lowQualityRefPricePlaceholder,
   },
@@ -42,7 +42,7 @@ describe.each(genericRefPriceParsers)(
       (refPrice, parsedRefPrice) => {
         const parsed = parser(
           testContent
-            .replace(/\s/g, "  ")
+            .replace(/\s/g, " ".repeat(4))
             .replace(placeholder, String(refPrice))
         );
 
@@ -81,7 +81,7 @@ describe("getCitiesRefPrice", () => {
   ];
 
   it("should get reference price for each city", () => {
-    const citiesRefPrice = getCitiesRefPrice(testContent);
+    const citiesRefPrice = citiesRefPriceParser(testContent);
 
     expect(citiesRefPrice).toEqual(expected);
   });
@@ -90,7 +90,7 @@ describe("getCitiesRefPrice", () => {
     const testContentWithouAccents = testContent
       .normalize("NFD")
       .replace(/\p{Diacritic}/gu, "");
-    const citiesRefPrice = getCitiesRefPrice(testContentWithouAccents);
+    const citiesRefPrice = citiesRefPriceParser(testContentWithouAccents);
 
     expect(citiesRefPrice).toEqual(expected);
   });

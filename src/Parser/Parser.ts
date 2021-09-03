@@ -1,9 +1,9 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
 import fs from "fs/promises";
 import {
-  getLowQualityRefPrice,
-  getPremiumRefPrice,
-  getCitiesRefPrice,
+  lowQualityRefPriceParser,
+  premiumRefPriceParser,
+  citiesRefPriceParser,
   RefPriceParser,
 } from "./parsers";
 
@@ -39,11 +39,6 @@ export class IcpParser {
     });
 
     const contents = await Promise.all(contentsPromises);
-    return contents.join("");
+    return contents.join("").replace(/\s+/g, " ");
   }
 }
-
-const parser = new IcpParser();
-
-const parsers = [getLowQualityRefPrice, getPremiumRefPrice, getCitiesRefPrice];
-parser.parse("./pdf.pdf", parsers).then((json) => console.log(json));
