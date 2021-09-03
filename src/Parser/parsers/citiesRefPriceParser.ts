@@ -9,7 +9,6 @@ export const citiesRefPriceParser: ExtendedRefPriceParser = (
       .normalize("NFD")
       .replace(/([aeiou])(\p{Diacritic})/gu, "[$1$1$2]")
       .normalize();
-  const multipleSpaces = (str: string): string => str.replace(/\s+/g, "");
   const cities = [
     "Armenia",
     "Bogotá",
@@ -27,9 +26,8 @@ export const citiesRefPriceParser: ExtendedRefPriceParser = (
     "Santa Marta",
     "Valledupar",
   ].map(accentInsensitive);
-  // .map(multipleSpaces);
   const regExp = new RegExp(
-    `(${cities.join("|")})\\s+?(\\d{0,3}[,.]?\\d{3}[,.]\\d{3})`,
+    `(${cities.join("|")}) (\\d{0,3}[,.]?\\d{3}[,.]\\d{3})`,
     "gi"
   );
   const refPriceByCityMatch = content.matchAll(regExp);
