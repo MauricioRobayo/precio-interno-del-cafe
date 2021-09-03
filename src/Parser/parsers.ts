@@ -2,8 +2,9 @@ import camelCase from "lodash/camelCase";
 
 export type RefPrice = [string, number];
 
-type RefPriceParser = (content: string) => RefPrice;
+type BaseRefPriceParser = (content: string) => RefPrice;
 type ExtendedRefPriceParser = (content: string) => [string, RefPrice[]];
+export type RefPriceParser = BaseRefPriceParser | ExtendedRefPriceParser;
 
 const premiumRefPriceRegExp =
   /Precio\s+total\s+por\s+carga.*?(\d{0,3},?\d{3},\d{3})/;
@@ -13,7 +14,7 @@ const lowQualityRefPriceRegExp =
 export function createRefPriceParser(
   name: string,
   regExp: RegExp
-): RefPriceParser {
+): BaseRefPriceParser {
   return function refPriceParser(content: string): RefPrice {
     const match = content.match(regExp);
 
@@ -29,12 +30,12 @@ export function createRefPriceParser(
   };
 }
 
-export const getPremiumRefPrice: RefPriceParser = createRefPriceParser(
+export const getPremiumRefPrice: BaseRefPriceParser = createRefPriceParser(
   "premium",
   premiumRefPriceRegExp
 );
 
-export const getLowQualityRefPrice: RefPriceParser = createRefPriceParser(
+export const getLowQualityRefPrice: BaseRefPriceParser = createRefPriceParser(
   "lowQuality",
   lowQualityRefPriceRegExp
 );
@@ -48,21 +49,21 @@ export const getCitiesRefPrice: ExtendedRefPriceParser = (
       .replace(/([aeiou])(\p{Diacritic})/gu, "[$1$1$2]")
       .normalize();
   const cities = [
-    "armenia",
-    "bogotá",
-    "bucaramanga",
-    "buga",
-    "chinchiná",
-    "cúcuta",
-    "manizales",
-    "medellín",
-    "neiva",
-    "pamplona",
-    "pasto",
-    "pereira",
-    "popayán",
-    "santa marta",
-    "valledupar",
+    "Armenia",
+    "Bogotá",
+    "Bucaramanga",
+    "Buga",
+    "Chinchiná",
+    "Cúcuta",
+    "Manizales",
+    "Medellín",
+    "Neiva",
+    "Pamplona",
+    "Pasto",
+    "Pereira",
+    "Popayán",
+    "Santa Marta",
+    "Valledupar",
   ].map(accentInsensitive);
   const regExp = new RegExp(
     `(${cities.join("|")})\\s+?(\\d{0,3}[,.]?\\d{3}[,.]\\d{3})`,
