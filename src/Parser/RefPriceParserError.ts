@@ -4,7 +4,7 @@ export class RefPriceParserError extends CustomError {
   constructor(
     public pattern: string,
     public content: string,
-    message?: string
+    message = "Failed parsing reference price"
   ) {
     super(message);
   }
