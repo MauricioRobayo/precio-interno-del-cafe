@@ -7,35 +7,34 @@ import {
   externalRefPriceParser,
   internalRefPriceParser,
   lowQualityRefPricePerPointParser,
-} from "./parsers"
+} from "./parsers";
 
 export async function IcpParser(pdfPath: string): Promise<RefPriceStorage> {
-    const content = await getContent(pdfPath);
-    return {
-      cities: citiesRefPriceParser(content),
-      cupDiscount: cupDiscountRefPriceParser(content),
-      external: externalRefPriceParser(content),
-      internal: internalRefPriceParser(content),
-      lowQualityPerPoint: lowQualityRefPricePerPointParser(content)
-    }
-  }
+  const content = await getContent(pdfPath);
+  return {
+    cities: citiesRefPriceParser(content),
+    cupDiscount: cupDiscountRefPriceParser(content),
+    external: externalRefPriceParser(content),
+    internal: internalRefPriceParser(content),
+    lowQualityPerPoint: lowQualityRefPricePerPointParser(content),
+  };
+}
 
 export async function getContent(pdfPath: string): Promise<string> {
-    const arraybuffer = await fs.readFile(pdfPath);
+  const arraybuffer = await fs.readFile(pdfPath);
 
-    const pdf = getDocument(arraybuffer);
-    const doc = await pdf.promise;
+  const pdf = getDocument(arraybuffer);
+  const doc = await pdf.promise;
 
-    const pageNumbers = Array.from({ length: 2 }, (_, i) => i + 1);
-    const contentsPromises = pageNumbers.map(async (pageNumber) => {
-      const page = await doc.getPage(pageNumber);
-      const content = await page.getTextContent();
-      return content.items
-        .map((item) => ("str" in item ? item.str : ""))
-        .join("");
-    });
+  const pageNumbers = Array.from({ length: 2 }, (_, i) => i + 1);
+  const contentsPromises = pageNumbers.map(async (pageNumber) => {
+    const page = await doc.getPage(pageNumber);
+    const content = await page.getTextContent();
+    return content.items
+      .map((item) => ("str" in item ? item.str : ""))
+      .join("");
+  });
 
-    const contents = await Promise.all(contentsPromises);
-    return contents.join("").replace(/\s+/g, " ");
-  }
+  const contents = await Promise.all(contentsPromises);
+  return contents.join("").replace(/\s+/g, " ");
 }
