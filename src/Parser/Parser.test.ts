@@ -3,7 +3,6 @@ import { IcpParser } from "./Parser";
 import {
   BaseRefPriceParser,
   ExtendedRefPriceParser,
-  RefPrice,
 } from "./parsers/createRefPriceParser";
 
 const pdfFile = path.join(__dirname, "example.pdf");
@@ -18,7 +17,45 @@ it("should return the correct object for a base parser", async () => {
   expect(parsedContent).toEqual({ baseParser: 1 });
 });
 
+it("should properly combine two base parsers", async () => {
+  const mockBaseParser1: BaseRefPriceParser = () => {
+    return ["baseParser1", 1];
+  };
+  const mockBaseParser2: BaseRefPriceParser = () => {
+    return ["baseParser2", 2];
+  };
+  const icpParser = new IcpParser([mockBaseParser1, mockBaseParser2]);
+  const parsedContent = await icpParser.parse(pdfFile);
+
+  expect(parsedContent).toEqual({ baseParser1: 1, baseParser2: 2 });
+});
+
 it("should return the correct object for an extended parser", async () => {
+  const mockBaseParser: BaseRefPriceParser = () => {
+    return ["baseParser", 1];
+  };
+  const mockExtendedParser: ExtendedRefPriceParser = () => {
+    return [
+      "extendedParser",
+      [
+        ["a", 1],
+        ["b", 2],
+      ],
+    ];
+  };
+  const icpParser = new IcpParser([mockBaseParser, mockExtendedParser]);
+  const parsedContent = await icpParser.parse(pdfFile);
+
+  expect(parsedContent).toEqual({
+    baseParser: 1,
+    extendedParser: {
+      a: 1,
+      b: 2,
+    },
+  });
+});
+
+it("should properly combinean base and extended parsers", async () => {
   const mockExtendedParser: ExtendedRefPriceParser = () => {
     return [
       "extendedParser",
