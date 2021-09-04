@@ -1,10 +1,17 @@
-import { lowQualityRefPriceParser, premiumRefPriceParser } from "./baseParsers";
+import {
+  lowQualityRefPriceParser,
+  premiumRefPriceParser,
+  lowQualityRefPricePerPointParser,
+} from "./baseParsers";
 
 const placeholder = "{{placeholder}}";
 const premiumRefPriceTestCases = [12_345_678, 1_234_567, 123_456].map(
   (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
 );
 const lowQualityRefPriceTestCases = [123_456, 12_345, 1_234, 123].map(
+  (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
+);
+const lowQualityRefPricePerPointTestCases = [12_234, 1_234, 123].map(
   (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
 );
 const genericRefPriceParsers = [
@@ -25,6 +32,15 @@ const genericRefPriceParsers = [
       "Precio total por carga de 125 Kg de pergamino seco 1,735,000 COP" +
       `Precio total de pasilla contenida en el pergamino ${placeholder} COP ` +
       "Tabla de preciosPERGAMINO $ALMACAFE Carga (1) (2) Kilo Arroba",
+  },
+  {
+    name: "lowQualityPerPoint",
+    parser: lowQualityRefPricePerPointParser,
+    cases: lowQualityRefPricePerPointTestCases,
+    testContent:
+      "PRECIO DE REFERENCIA PASILLA DE FINCA" +
+      `Precio por punto producido ${placeholder}` +
+      "COP 51.000 42.500 34.000 25.500 60504030",
   },
 ];
 
