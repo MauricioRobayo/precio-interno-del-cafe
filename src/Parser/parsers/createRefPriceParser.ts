@@ -1,27 +1,23 @@
 import camelCase from "lodash/camelCase";
 
-export type RefPrice = [string, number];
-export type ExtendedRefPrice = [string, RefPrice[]];
-export type BaseRefPriceParser = (content: string) => RefPrice;
-export type ExtendedRefPriceParser = (content: string) => ExtendedRefPrice;
+export type ExtendedRefPrice = Record<string, number>;
+export type BaseRefPriceParser = (content: string) => number;
+export type ExtendedRefPriceParser = (
+  content: string
+) => Record<string, number>;
 export type RefPriceParser = BaseRefPriceParser | ExtendedRefPriceParser;
 
-export function createBaseRefPriceParser(
-  name: string,
-  regExp: RegExp
-): BaseRefPriceParser {
-  return function (content: string): RefPrice {
+export function createBaseRefPriceParser(regExp: RegExp): BaseRefPriceParser {
+  return function (content: string) {
     const match = content.match(regExp);
-
+    regExp.source;
     if (!match) {
       throw new Error(
-        `${name}: Could not find reference price in content: ${content}`
+        `Could not find pattern '${regExp.source}' in content '${content}''`
       );
     }
 
-    const refPrice = Number(match[1].replace(/,/g, ""));
-
-    return [camelCase(name), refPrice];
+    return Number(match[1].replace(/,/g, ""));
   };
 }
 
