@@ -1,4 +1,4 @@
-export { RefPriceParser } from "./createRefPriceParser";
-export { citiesRefPriceParser } from "./citiesRefPriceParser";
-export { internalRefPriceParser } from "./internalRefPriceParser";
-export { premiumRefPriceParser } from "./baseParsers";
+export { externalRefPriceParser as externalRefPrice } from "./externalRefPriceParser";
+export { internalRefPriceParser as internalRefPrice } from "./internalRefPriceParser";
+export { citiesRefPriceParser as citiesRefPrice } from "./citiesRefPriceParser";
+export { lowQualityRefPricePerPointParser as lowQualityRefPricePerPoint } from "./baseParsers";

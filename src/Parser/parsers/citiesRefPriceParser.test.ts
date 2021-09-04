@@ -1,26 +1,25 @@
 import { citiesRefPriceParser } from ".";
 import { exampleContent } from "../exampleContent";
+import { CitiesRefPrice } from "../models/RefPriceStorage";
 
-const expected = [
-  "cities",
-  [
-    ["armenia", 1735500],
-    ["bogota", 1734250],
-    ["bucaramanga", 1733875],
-    ["buga", 1736250],
-    ["chinchina", 1735375],
-    ["cucuta", 1733375],
-    ["manizales", 1735375],
-    ["medellin", 1734625],
-    ["neiva", 1733750],
-    ["pamplona", 1733500],
-    ["pasto", 1733500],
-    ["pereira", 1735375],
-    ["popayan", 1735625],
-    ["santaMarta", 1737125],
-    ["valledupar", 1734750],
-  ],
-];
+const expected: CitiesRefPrice = {
+  armenia: 1_735_500,
+  bogota: 1_734_250,
+  bucaramanga: 1_733_875,
+  buga: 1_736_250,
+  chinchina: 1_735_375,
+  cucuta: 1_733_375,
+  ibague: 1_734_625,
+  manizales: 1_735_375,
+  medellin: 1_734_625,
+  neiva: 1_733_750,
+  pamplona: 1_733_500,
+  pasto: 1_733_500,
+  pereira: 1_735_375,
+  popayan: 1_735_625,
+  santaMarta: 1_737_125,
+  valledupar: 1_734_750,
+};
 
 it("should get reference price for each city", () => {
   const citiesRefPrice = citiesRefPriceParser(exampleContent);
@@ -29,10 +28,14 @@ it("should get reference price for each city", () => {
 });
 
 it("should get reference price for each city if accent is missing", () => {
-  const testContentWithouAccents = exampleContent
+  const exampleContentWithoutAccents = exampleContent
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "");
-  const citiesRefPrice = citiesRefPriceParser(testContentWithouAccents);
+  const citiesRefPrice = citiesRefPriceParser(exampleContentWithoutAccents);
 
   expect(citiesRefPrice).toEqual(expected);
+});
+
+it("should throw an error if no content is found", () => {
+  expect(() => citiesRefPriceParser("")).toThrowError();
 });

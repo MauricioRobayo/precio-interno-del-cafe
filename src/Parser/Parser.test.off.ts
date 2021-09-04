@@ -1,5 +1,5 @@
 import path from "path";
-import { IcpParser } from "./Parser";
+import { IcpParser } from "./parser";
 import {
   BaseRefPriceParser,
   ExtendedRefPriceParser,
@@ -10,7 +10,7 @@ const pdfFile = path.join(__dirname, "example.pdf");
 
 it("should return the correct object for a base parser", async () => {
   const mockBaseParser: BaseRefPriceParser = () => {
-    return ["baseParser", 1];
+    return 1;
   };
   const icpParser = new IcpParser([mockBaseParser]);
   const parsedContent = await icpParser.parse(pdfFile);
@@ -20,10 +20,10 @@ it("should return the correct object for a base parser", async () => {
 
 it("should properly combine two base parsers", async () => {
   const mockBaseParser1: BaseRefPriceParser = () => {
-    return ["baseParser1", 1];
+    return 1;
   };
   const mockBaseParser2: BaseRefPriceParser = () => {
-    return ["baseParser2", 2];
+    return 2;
   };
   const icpParser = new IcpParser([mockBaseParser1, mockBaseParser2]);
   const parsedContent = await icpParser.parse(pdfFile);

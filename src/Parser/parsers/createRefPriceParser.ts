@@ -1,44 +1,45 @@
 import camelCase from "lodash/camelCase";
+import { RefPriceParserError } from "../RefPriceParserError";
+import { RefPrice } from "../models/RefPriceStorage";
 
-export type ExtendedRefPrice = Record<string, number>;
+export type ExtendedRefPrice = Record<string, RefPrice>;
 export type BaseRefPriceParser = (content: string) => number;
-export type ExtendedRefPriceParser = (
+export type ExtendedRefPriceParser<T> = (
   content: string
-) => Record<string, number>;
-export type RefPriceParser = BaseRefPriceParser | ExtendedRefPriceParser;
+) => Record<keyof T, RefPrice>;
+export type RefPriceParser =
+  | BaseRefPriceParser
+  | ExtendedRefPriceParser<ExtendedRefPrice>;
 
 export function createBaseRefPriceParser(regExp: RegExp): BaseRefPriceParser {
   return function (content: string) {
     const match = content.match(regExp);
-    regExp.source;
+
     if (!match) {
-      throw new Error(
-        `Could not find pattern '${regExp.source}' in content '${content}''`
-      );
+      throw new RefPriceParserError(regExp.source, content);
     }
 
     return Number(match[1].replace(/,/g, ""));
   };
 }
 
-export function createExtendedRefPriceParser(
-  name: string,
+export function createExtendedRefPriceParser<T extends { [k: string]: number }>(
   regExp: RegExp
-): ExtendedRefPriceParser {
-  return function (content: string): ExtendedRefPrice {
-    const match = content.matchAll(regExp);
+) {
+  return function (content: string): T {
+    const matchArray = [...content.matchAll(regExp)];
 
-    const refPrice: RefPrice[] = [...match].map((match) => {
-      const key = camelCase(match[1]);
-      const value = Number(match[2].replace(/,/g, ""));
-      if (Number.isNaN(value)) {
-        throw new Error(
-          `IcpParser.getRefPriceByCity: could not parse reference price '${match[2]}' for city '${match[1]}'`
-        );
-      }
+    if (matchArray.length === 0) {
+      throw new RefPriceParserError(regExp.source, content);
+    }
 
-      return [key, value];
-    });
-    return [name, refPrice];
+    return Object.fromEntries(
+      matchArray.map((match) => {
+        const key = camelCase(match[1]);
+        const value = Number(match[2].replace(/,/g, ""));
+
+        return [key, value];
+      })
+    ) as T;
   };
 }

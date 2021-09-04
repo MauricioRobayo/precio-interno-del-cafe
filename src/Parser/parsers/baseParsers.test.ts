@@ -46,17 +46,15 @@ const genericRefPriceParsers = [
 
 describe.each(genericRefPriceParsers)(
   "$name",
-  ({ name, parser, cases, testContent }) => {
+  ({ parser, cases, testContent }) => {
     it.each(cases)("should parse %s as %s", (refPrice, parsedRefPrice) => {
       const parsed = parser(testContent.replace(placeholder, String(refPrice)));
 
-      expect(parsed).toEqual([name, parsedRefPrice]);
+      expect(parsed).toEqual(parsedRefPrice);
     });
 
     it("should throw if can not parse refPrice", () => {
-      expect(() => parser("")).toThrowError(
-        `${name}: Could not find reference price in content: `
-      );
+      expect(() => parser("")).toThrowError();
     });
   }
 );

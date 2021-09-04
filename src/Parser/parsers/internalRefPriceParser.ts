@@ -1,9 +1,9 @@
 import { premiumRefPriceParser, lowQualityRefPriceParser } from "./baseParsers";
-import { ExtendedRefPrice } from "./createRefPriceParser";
+import { InternalRefPrice } from "../models/RefPriceStorage";
 
-export function internalRefPriceParser(content: string): ExtendedRefPrice {
-  return [
-    "internal",
-    [premiumRefPriceParser(content), lowQualityRefPriceParser(content)],
-  ];
+export function internalRefPriceParser(content: string): InternalRefPrice {
+  return {
+    premium: premiumRefPriceParser(content),
+    lowQuality: lowQualityRefPriceParser(content),
+  };
 }

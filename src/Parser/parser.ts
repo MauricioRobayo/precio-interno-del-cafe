@@ -1,24 +1,20 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
 import fs from "fs/promises";
-import { RefPriceParser } from "./parsers";
+import { RefPriceStorage } from "./models/RefPriceStorage";
+import * as parser from "./parsers"
 
-export class IcpParser {
-  constructor(private parsers: RefPriceParser[]) {}
-
-  async parse(
-    pdfPath: string
-  ): Promise<Record<string, number | Record<string, number>>> {
-    const content = await IcpParser.getContent(pdfPath);
-
-    return Object.fromEntries(
-      this.parsers.map((parser) => {
-        const [key, value] = parser(content);
-        return [key, Array.isArray(value) ? Object.fromEntries(value) : value];
-      })
-    );
+export async function IcpParser(pdfPath: string): Promise<RefPriceStorage> {
+    const content = await getContent(pdfPath);
+    return {
+      cities: parser.citiesRefPrice(content),
+      cupDiscount: "" as any,
+      external: parser.externalRefPrice(content),
+      internal: parser.internalRefPrice(content),
+      lowQualityPerPoint: parser.lowQualityRefPricePerPoint(content)
+    }
   }
 
-  static async getContent(pdfPath: string): Promise<string> {
+export async function getContent(pdfPath: string): Promise<string> {
     const arraybuffer = await fs.readFile(pdfPath);
 
     const pdf = getDocument(arraybuffer);
