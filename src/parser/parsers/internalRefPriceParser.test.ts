@@ -2,7 +2,7 @@ import { internalRefPriceParser } from "./internalRefPriceParser";
 import { exampleContent } from "../exampleContent";
 import { InternalRefPrice } from "../../models/RefPriceStorage";
 
-it("should return an extended internal reference price", () => {
+it("should return internal reference price", () => {
   const parsed = internalRefPriceParser(exampleContent);
   const expected: InternalRefPrice = {
     premium: 1735000,

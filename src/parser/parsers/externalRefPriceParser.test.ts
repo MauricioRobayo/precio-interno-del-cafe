@@ -2,7 +2,7 @@ import { externalRefPriceParser } from "./externalRefPriceParser";
 import { exampleContent } from "../exampleContent";
 import { ExternalRefPrice } from "../../models/RefPriceStorage";
 
-it("should return an external ref price object", () => {
+it("should return external reference price", () => {
   const parsed = externalRefPriceParser(exampleContent);
   const expected: ExternalRefPrice = {
     nyCFirst: 191.9,
