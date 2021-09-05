@@ -18,4 +18,4 @@ function valueParser(value: string) {
 }
 
 export const cupDiscountRefPriceParser =
-  createExtendedRefPriceParser<CupDiscount>(regExp, keyMapper, valueParser);
+  createExtendedRefPriceParser<CupDiscount>(regExp, { keyMapper, valueParser });

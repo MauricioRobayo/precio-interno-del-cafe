@@ -22,8 +22,13 @@ export function createExtendedRefPriceParser<
   T extends { [k: string]: unknown }
 >(
   regExp: RegExp,
-  keyMapper: (key: string) => string = camelCase,
-  valueParser: (value: string) => unknown = defaultValueParser
+  {
+    keyMapper = camelCase,
+    valueParser = defaultValueParser,
+  }: {
+    keyMapper?: (key: string) => string;
+    valueParser?: (value: string) => unknown;
+  } = {}
 ) {
   return function (content: string): T {
     const matchArray = [...content.matchAll(regExp)];

@@ -15,4 +15,4 @@ const regExp =
   /Cierre (primera|segunda|tercera) posici[oó]n.*?(\d{1,3}\.\d{2})/gi;
 
 export const externalRefPriceParser =
-  createExtendedRefPriceParser<ExternalRefPrice>(regExp, keyMapper);
+  createExtendedRefPriceParser<ExternalRefPrice>(regExp, { keyMapper });
