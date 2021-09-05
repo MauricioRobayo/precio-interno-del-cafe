@@ -1,11 +1,24 @@
 # Precio interno del café
 
-Exponential backoff to retrieve pdf file from https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf
+## Downloader
 
-Use ETAG validation on each request until we get a 200 response, keep trying using exponential backoff while we get a 304 response.
+Start at a predefined hour, let's say at 1:00pm.
 
-Save downloaded file to GCP storage.
+Retrieve ETag from MongoDB.
 
-Parse downloaded file, get as much information as possible and convert it to JSON.
+Request file using ETag validation, we should get 302 (not modified) response while the pdf is the same as the latest previous ETag.
 
-Use MongoDb to save parsed info as JSON, as well as ETAG, modified time, execution time, and retries.
+Loop until we get a 200 response, reached max number of retries, or reached certain time
+
+## Parser
+
+Implemented.
+
+## Uploader
+
+- Upload to GCP storage
+
+## refPriceRepository
+
+- getETag
+- save
