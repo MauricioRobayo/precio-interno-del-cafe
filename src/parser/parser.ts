@@ -36,5 +36,3 @@ export async function getContent(pdfPath: string): Promise<string> {
   const contents = await Promise.all(contentsPromises);
   return contents.join("").replace(/\s+/g, " ");
 }
-
-IcpParser("./example.pdf").then(console.log);
