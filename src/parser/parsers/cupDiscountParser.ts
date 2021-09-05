@@ -14,7 +14,7 @@ function keyMapper(key: string) {
 }
 
 function valueParser(value: string) {
-  return value.split(" ").map(Number);
+  return value.split(" ").map((value) => Number(value.replace(/\./g, "")));
 }
 
 export const cupDiscountParser = createExtendedParser<CupDiscount>(regExp, {
