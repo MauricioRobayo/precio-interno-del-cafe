@@ -1,16 +1,4 @@
-function createBaseRefPriceParser(regExp: RegExp) {
-  return function (content: string): number {
-    const match = content.match(regExp);
-
-    if (!match) {
-      throw new Error(
-        `Failed to find pattern '${regExp.source} in content '${content}`
-      );
-    }
-
-    return Number(match[1].replace(/,/g, ""));
-  };
-}
+import { createBaseRefPriceParser } from "./createRefPriceParser";
 
 export const premiumRefPriceParser = createBaseRefPriceParser(
   /Precio total por carga.*?(\d{0,3},?\d{3},\d{3})/
