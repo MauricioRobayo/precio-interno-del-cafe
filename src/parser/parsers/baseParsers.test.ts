@@ -2,23 +2,18 @@ import {
   lowQualityRefPriceParser,
   premiumRefPriceParser,
   lowQualityRefPricePerPointParser,
+  yieldFactorParser,
 } from "./baseParsers";
 
+function toTupleWithFormattedValue(value: number) {
+  return [value.toLocaleString(), value];
+}
 const placeholder = "{{placeholder}}";
-const premiumRefPriceTestCases = [12_345_678, 1_234_567, 123_456].map(
-  (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
-);
-const lowQualityRefPriceTestCases = [123_456, 12_345, 1_234, 123].map(
-  (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
-);
-const lowQualityRefPricePerPointTestCases = [12_234, 1_234, 123].map(
-  (refPrice) => [refPrice.toLocaleString("en-US"), refPrice]
-);
 const genericRefPriceParsers = [
   {
     name: "premium",
     parser: premiumRefPriceParser,
-    cases: premiumRefPriceTestCases,
+    cases: [12_345_678, 1_234_567, 123_456].map(toTupleWithFormattedValue),
     testContent:
       "PRECIO INTERNO DE REFERENCIA" +
       `Precio total por carga de 125 Kg de pergamino seco ${placeholder} COP` +
@@ -27,7 +22,7 @@ const genericRefPriceParsers = [
   {
     name: "lowQuality",
     parser: lowQualityRefPriceParser,
-    cases: lowQualityRefPriceTestCases,
+    cases: [123_456, 12_345, 1_234, 123].map(toTupleWithFormattedValue),
     testContent:
       "Precio total por carga de 125 Kg de pergamino seco 1,735,000 COP" +
       `Precio total de pasilla contenida en el pergamino ${placeholder} COP ` +
@@ -36,11 +31,30 @@ const genericRefPriceParsers = [
   {
     name: "lowQualityPerPoint",
     parser: lowQualityRefPricePerPointParser,
-    cases: lowQualityRefPricePerPointTestCases,
+    cases: [12_234, 1_234, 123].map(toTupleWithFormattedValue),
     testContent:
       "PRECIO DE REFERENCIA PASILLA DE FINCA" +
       `Precio por punto producido ${placeholder}` +
       "COP 51.000 42.500 34.000 25.500 60504030",
+  },
+  {
+    name: "yieldFactor",
+    parser: yieldFactorParser,
+    cases: [["94.00", 94]],
+    testContent:
+      "VALLEDUPAR 1,734,750 13,878 173,475" +
+      "PRECIO DE REFERENCIA PASILLA DE FINCA" +
+      "Precio por punto producido 850 " +
+      "COP 51.000 42.500 34.000 25.500 60504030" +
+      "Precio por ArrobaPuntos1. " +
+      `Para café pergamino con factor de rendimiento ${placeholder}` +
+      "2. Las cooperativas de caficultores cubrirán, " +
+      "con cargo al precio, todos los costos relacionados " +
+      "con el servicio de acopio de café al productor." +
+      "Federación Nacional de Cafeteros de Colombia - " +
+      "Oficina de prensaCalle 73 No. 8-13 Torre B Piso 12 - " +
+      "Teléfono: 3136600 ext. 1790-1752 Directo:2352262" +
+      "Bogotá - Colombiawww.federaciondecafeteros.org",
   },
 ];
 
