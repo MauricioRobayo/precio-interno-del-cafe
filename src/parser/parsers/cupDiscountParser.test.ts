@@ -1,0 +1,14 @@
+import { CupDiscount } from "../../models/RefPriceStorage";
+import { exampleContent } from "../exampleContent";
+import { cupDiscountParser } from "./cupDiscountParser";
+
+it("should return cup discount", () => {
+  const parsed = cupDiscountParser(exampleContent);
+  const expected: CupDiscount = {
+    typeIQ1: [88_000, 88_000, 88_000, 88_000, 88_000, 88_000, 88_000, 88_000],
+    typeIIQ2: [20_000, 20_000, 20_000, 20_000, 60_000, 60_000, 60_000, 60_000],
+    typeIIIQ3: [20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000, 20_000],
+  };
+
+  expect(parsed).toEqual(expected);
+});
