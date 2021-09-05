@@ -8,7 +8,7 @@ import {
   internalParser,
 } from "./parsers";
 
-export async function IcpParser(pdfPath: string): Promise<RefPriceStorage> {
+export async function parser(pdfPath: string): Promise<RefPriceStorage> {
   const content = await getContent(pdfPath);
   return {
     cities: citiesParser(content),

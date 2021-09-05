@@ -1,11 +1,11 @@
 import path from "path";
-import { getContent, IcpParser } from "./parser";
+import { getContent, parser } from "./parser";
 import { exampleContent } from "./exampleContent";
 
 const pdfPath = path.join(__dirname, "example.pdf");
 
 it("should return a reference price object", async () => {
-  const refPrice = await IcpParser(pdfPath);
+  const refPrice = await parser(pdfPath);
 
   expect(refPrice.internal).toEqual(
     expect.objectContaining({
