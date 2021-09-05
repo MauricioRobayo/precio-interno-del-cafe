@@ -12,6 +12,6 @@ export const lowQualityRefPricePerPointParser = createBaseRefPriceParser(
   /Precio por punto producido.*?(\d{0,3},?\d{3})/
 );
 
-export const yieldFactorParser = createBaseRefPriceParser(
+export const baseYieldFactorParser = createBaseRefPriceParser(
   /Para café pergamino con factor de rendimiento (\d{2}.\d{2}(?!\.))/
 );

@@ -1,4 +1,3 @@
-export type RefPrice = number;
 type Cities =
   | "armenia"
   | "bogota"
@@ -18,13 +17,13 @@ type Cities =
   | "valledupar";
 export type ExternalRefPrice = Record<
   "nyCFirst" | "nyCSecond" | "nyCThird",
-  RefPrice
+  number
 >;
 export type InternalRefPrice = Record<
-  "lowQuality" | "lowQualityPerPoint" | "premium",
-  RefPrice
+  "lowQuality" | "lowQualityPerPoint" | "premium" | "baseYieldFactor",
+  number
 >;
-export type CitiesRefPrice = Record<Cities, RefPrice>;
+export type CitiesRefPrice = Record<Cities, number>;
 export type CupDiscount = Record<
   "typeIQ1" | "typeIIQ2" | "typeIIIQ3",
   number[]

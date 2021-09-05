@@ -2,7 +2,7 @@ import {
   lowQualityRefPriceParser,
   premiumRefPriceParser,
   lowQualityRefPricePerPointParser,
-  yieldFactorParser,
+  baseYieldFactorParser,
 } from "./baseParsers";
 
 function toTupleWithFormattedValue(value: number) {
@@ -39,7 +39,7 @@ const genericRefPriceParsers = [
   },
   {
     name: "yieldFactor",
-    parser: yieldFactorParser,
+    parser: baseYieldFactorParser,
     cases: [["94.00", 94]],
     testContent:
       "VALLEDUPAR 1,734,750 13,878 173,475" +

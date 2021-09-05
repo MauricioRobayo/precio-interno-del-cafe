@@ -1,8 +1,7 @@
 import camelCase from "lodash/camelCase";
-import { RefPrice } from "../models/RefPriceStorage";
 
 export function createBaseRefPriceParser(regExp: RegExp) {
-  return function (content: string): RefPrice {
+  return function (content: string): number {
     const match = content.match(regExp);
 
     if (!match) {

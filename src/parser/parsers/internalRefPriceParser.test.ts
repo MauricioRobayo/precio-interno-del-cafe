@@ -8,6 +8,7 @@ it("should return an extended internal reference price", () => {
     premium: 1735000,
     lowQuality: 7000,
     lowQualityPerPoint: 850,
+    baseYieldFactor: 94,
   };
 
   expect(parsed).toEqual(expected);
