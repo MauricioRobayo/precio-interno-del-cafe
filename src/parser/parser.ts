@@ -6,7 +6,6 @@ import {
   cupDiscountRefPriceParser,
   externalRefPriceParser,
   internalRefPriceParser,
-  lowQualityRefPricePerPointParser,
 } from "./parsers";
 
 export async function IcpParser(pdfPath: string): Promise<RefPriceStorage> {
@@ -16,7 +15,6 @@ export async function IcpParser(pdfPath: string): Promise<RefPriceStorage> {
     cupDiscount: cupDiscountRefPriceParser(content),
     external: externalRefPriceParser(content),
     internal: internalRefPriceParser(content),
-    lowQualityPerPoint: lowQualityRefPricePerPointParser(content),
   };
 }
 
@@ -38,3 +36,5 @@ export async function getContent(pdfPath: string): Promise<string> {
   const contents = await Promise.all(contentsPromises);
   return contents.join("").replace(/\s+/g, " ");
 }
+
+IcpParser("./example.pdf").then(console.log);
