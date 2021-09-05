@@ -1,4 +1,4 @@
-import { CupDiscount } from "../models/RefPriceStorage";
+import { CupDiscount } from "../../models/RefPriceStorage";
 import { createExtendedRefPriceParser } from "./createRefPriceParser";
 
 const regExp = /tipo (i q1|ii q2|iii q3) ([\d. ]+) /gi;

@@ -4,7 +4,7 @@ import {
   lowQualityRefPricePerPointParser,
   baseYieldFactorParser,
 } from "./baseParsers";
-import { InternalRefPrice } from "../models/RefPriceStorage";
+import { InternalRefPrice } from "../../models/RefPriceStorage";
 
 export function internalRefPriceParser(content: string): InternalRefPrice {
   return {

@@ -1,4 +1,4 @@
-import { ExternalRefPrice } from "../models/RefPriceStorage";
+import { ExternalRefPrice } from "../../models/RefPriceStorage";
 import { createExtendedRefPriceParser } from "./createRefPriceParser";
 
 function keyMapper(key: string) {

@@ -1,6 +1,6 @@
 import { internalRefPriceParser } from "./internalRefPriceParser";
 import { exampleContent } from "../exampleContent";
-import { InternalRefPrice } from "../models/RefPriceStorage";
+import { InternalRefPrice } from "../../models/RefPriceStorage";
 
 it("should return an extended internal reference price", () => {
   const parsed = internalRefPriceParser(exampleContent);
