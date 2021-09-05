@@ -1,6 +1,6 @@
 import camelCase from "lodash/camelCase";
 
-export function createBaseRefPriceParser(regExp: RegExp) {
+export function createBaseParser(regExp: RegExp) {
   return function (content: string): number {
     const match = content.match(regExp);
 
@@ -18,9 +18,7 @@ function defaultValueParser(value: string) {
   return Number(value.replace(/,/g, ""));
 }
 
-export function createExtendedRefPriceParser<
-  T extends { [k: string]: unknown }
->(
+export function createExtendedParser<T extends { [k: string]: unknown }>(
   regExp: RegExp,
   {
     keyMapper = camelCase,

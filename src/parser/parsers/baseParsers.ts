@@ -1,17 +1,17 @@
-import { createBaseRefPriceParser } from "./createRefPriceParser";
+import { createBaseParser } from "./createParser";
 
-export const premiumRefPriceParser = createBaseRefPriceParser(
+export const premiumRefPriceParser = createBaseParser(
   /Precio total por carga.*?(\d{0,3},?\d{3},\d{3})/
 );
 
-export const lowQualityRefPriceParser = createBaseRefPriceParser(
+export const lowQualityRefPriceParser = createBaseParser(
   /Precio total de pasilla.*?(\d{0,3},?\d{0,3},?\d{3})/
 );
 
-export const lowQualityRefPricePerPointParser = createBaseRefPriceParser(
+export const lowQualityRefPricePerPointParser = createBaseParser(
   /Precio por punto producido.*?(\d{0,3},?\d{3})/
 );
 
-export const baseYieldFactorParser = createBaseRefPriceParser(
+export const baseYieldFactorParser = createBaseParser(
   /Para café pergamino con factor de rendimiento (\d{2}.\d{2}(?!\.))/
 );

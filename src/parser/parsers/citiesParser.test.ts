@@ -1,4 +1,4 @@
-import { citiesRefPriceParser } from ".";
+import { citiesParser } from ".";
 import { exampleContent } from "../exampleContent";
 import { CitiesRefPrice } from "../../models/RefPriceStorage";
 
@@ -22,7 +22,7 @@ const expected: CitiesRefPrice = {
 };
 
 it("should get reference price for each city", () => {
-  const citiesRefPrice = citiesRefPriceParser(exampleContent);
+  const citiesRefPrice = citiesParser(exampleContent);
 
   expect(citiesRefPrice).toEqual(expected);
 });
@@ -31,11 +31,11 @@ it("should get reference price for each city if accent is missing", () => {
   const exampleContentWithoutAccents = exampleContent
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "");
-  const citiesRefPrice = citiesRefPriceParser(exampleContentWithoutAccents);
+  const citiesRefPrice = citiesParser(exampleContentWithoutAccents);
 
   expect(citiesRefPrice).toEqual(expected);
 });
 
 it("should throw an error if no content is found", () => {
-  expect(() => citiesRefPriceParser("")).toThrowError();
+  expect(() => citiesParser("")).toThrowError();
 });

@@ -1,5 +1,5 @@
 import { ExternalRefPrice } from "../../models/RefPriceStorage";
-import { createExtendedRefPriceParser } from "./createRefPriceParser";
+import { createExtendedParser } from "./createParser";
 
 function keyMapper(key: string) {
   return (
@@ -14,5 +14,6 @@ function keyMapper(key: string) {
 const regExp =
   /Cierre (primera|segunda|tercera) posici[oó]n.*?(\d{1,3}\.\d{2})/gi;
 
-export const externalRefPriceParser =
-  createExtendedRefPriceParser<ExternalRefPrice>(regExp, { keyMapper });
+export const externalParser = createExtendedParser<ExternalRefPrice>(regExp, {
+  keyMapper,
+});

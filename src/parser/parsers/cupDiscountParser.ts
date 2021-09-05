@@ -1,5 +1,5 @@
 import { CupDiscount } from "../../models/RefPriceStorage";
-import { createExtendedRefPriceParser } from "./createRefPriceParser";
+import { createExtendedParser } from "./createParser";
 
 const regExp = /tipo (i q1|ii q2|iii q3) ([\d. ]+) /gi;
 
@@ -17,5 +17,7 @@ function valueParser(value: string) {
   return value.split(" ").map(Number);
 }
 
-export const cupDiscountRefPriceParser =
-  createExtendedRefPriceParser<CupDiscount>(regExp, { keyMapper, valueParser });
+export const cupDiscountParser = createExtendedParser<CupDiscount>(regExp, {
+  keyMapper,
+  valueParser,
+});

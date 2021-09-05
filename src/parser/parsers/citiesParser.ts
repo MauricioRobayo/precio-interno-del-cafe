@@ -1,5 +1,5 @@
 import { CitiesRefPrice } from "../../models/RefPriceStorage";
-import { createExtendedRefPriceParser } from "./createRefPriceParser";
+import { createExtendedParser } from "./createParser";
 
 const accentInsensitive = (str: string): string =>
   str
@@ -29,5 +29,4 @@ const regExp = new RegExp(
   "gi"
 );
 
-export const citiesRefPriceParser =
-  createExtendedRefPriceParser<CitiesRefPrice>(regExp);
+export const citiesParser = createExtendedParser<CitiesRefPrice>(regExp);

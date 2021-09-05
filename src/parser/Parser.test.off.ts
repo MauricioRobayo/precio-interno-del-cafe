@@ -3,7 +3,7 @@ import { IcpParser } from "./parser";
 import {
   BaseRefPriceParser,
   ExtendedRefPriceParser,
-} from "./parsers/createRefPriceParser";
+} from "./parsers/createParser";
 import { exampleContent } from "./exampleContent";
 
 const pdfFile = path.join(__dirname, "example.pdf");
