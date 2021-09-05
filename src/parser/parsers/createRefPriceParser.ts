@@ -15,8 +15,16 @@ export function createBaseRefPriceParser(regExp: RegExp) {
   };
 }
 
-export function createExtendedRefPriceParser<T extends { [k: string]: number }>(
-  regExp: RegExp
+function defaultValueParser(value: string) {
+  return Number(value.replace(/,/g, ""));
+}
+
+export function createExtendedRefPriceParser<
+  T extends { [k: string]: unknown }
+>(
+  regExp: RegExp,
+  keyMapper: (key: string) => string = camelCase,
+  valueParser: (value: string) => unknown = defaultValueParser
 ) {
   return function (content: string): T {
     const matchArray = [...content.matchAll(regExp)];
@@ -28,10 +36,7 @@ export function createExtendedRefPriceParser<T extends { [k: string]: number }>(
     }
 
     return Object.fromEntries(
-      matchArray.map(([, key, value]) => [
-        camelCase(key),
-        Number(value.replace(/,/g, "")),
-      ])
+      matchArray.map(([, key, value]) => [keyMapper(key), valueParser(value)])
     ) as T;
   };
 }
