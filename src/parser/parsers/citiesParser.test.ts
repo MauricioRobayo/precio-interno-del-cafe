@@ -1,6 +1,6 @@
 import { citiesParser } from ".";
 import { exampleContent } from "../exampleContent";
-import { CitiesRefPrice } from "../../models/RefPriceStorage";
+import { CitiesRefPrice } from "../../models/ref-price";
 
 const expected: CitiesRefPrice = {
   armenia: 1_735_500,
