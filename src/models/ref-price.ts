@@ -32,6 +32,7 @@ export interface RefPriceStorage {
   etag: string;
   lastModified: string;
   refPrice: {
+    date: number;
     external: ExternalRefPrice;
     internal: InternalRefPrice;
     cities: CitiesRefPrice;
