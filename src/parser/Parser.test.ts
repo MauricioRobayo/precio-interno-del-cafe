@@ -7,6 +7,8 @@ const pdfPath = path.join(__dirname, "example.pdf");
 it("should return a reference price object", async () => {
   const refPrice = await parser(pdfPath);
 
+  expect(refPrice.date).toBe(new Date("2021-09-02").getTime());
+
   expect(refPrice.internal).toEqual(
     expect.objectContaining({
       lowQuality: expect.any(Number),
