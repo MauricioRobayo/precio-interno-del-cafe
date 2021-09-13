@@ -1,6 +1,6 @@
 import { Storage } from "@google-cloud/storage";
 import dotenv from "dotenv";
-import { getEnvVars } from "../../shared";
+import { getEnvVars } from "../../../shared";
 
 dotenv.config();
 
