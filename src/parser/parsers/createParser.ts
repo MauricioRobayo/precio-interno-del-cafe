@@ -1,7 +1,14 @@
 import camelCase from "lodash/camelCase";
 
-export function createBaseParser(regExp: RegExp) {
-  return function (content: string): number {
+function defaultValueParser(value: string): number {
+  return Number(value.replace(/,/g, ""));
+}
+
+export function createBaseParser(
+  regExp: RegExp,
+  valueParser = defaultValueParser
+) {
+  return function (content: string): ReturnType<typeof valueParser> {
     const match = content.match(regExp);
 
     if (!match) {
@@ -10,12 +17,8 @@ export function createBaseParser(regExp: RegExp) {
       );
     }
 
-    return Number(match[1].replace(/,/g, ""));
+    return valueParser(match[1]);
   };
-}
-
-function defaultValueParser(value: string) {
-  return Number(value.replace(/,/g, ""));
 }
 
 export function createExtendedParser<T extends { [k: string]: unknown }>(
