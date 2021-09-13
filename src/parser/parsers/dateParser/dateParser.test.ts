@@ -18,6 +18,23 @@ it("Should throw an error if no match", () => {
   const testContent = "";
 
   expect(() => dateParser(testContent)).toThrowError(
-    `Could not parse date from '${testContent}'`
+    `dateParser: Could not parse date from '${testContent}'`
+  );
+});
+
+it("Should throw an error if cannot map to a month", () => {
+  const testMonth = "error";
+  const testContent = `${testMonth} 02 / 2021`;
+
+  expect(() => dateParser(testContent)).toThrowError(
+    `dateParser: Could not map '${testMonth}' to a month`
+  );
+});
+
+it("Should throw an error if cannot parse date", () => {
+  const testContent = "Noviembre 45 / 9999";
+
+  expect(() => dateParser(testContent)).toThrowError(
+    "dateParser: Invalid time value '9999-11-45'"
   );
 });

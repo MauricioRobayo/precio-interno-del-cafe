@@ -17,12 +17,24 @@ export function dateParser(content: string): string {
   const match = content.match(/^(\w+) (\d{1,2})\s?\/\s?(\d{4})/);
 
   if (!match) {
-    throw new Error(`Could not parse date from '${content}'`);
+    throw new Error(`dateParser: Could not parse date from '${content}'`);
+  }
+
+  const monthLocalName = match[1].toLocaleLowerCase();
+  const month = months[monthLocalName];
+
+  if (!month) {
+    throw new Error(`dateParser: Could not map '${monthLocalName}' to a month`);
   }
 
   const date = match[2].padStart(2, "0");
-  const month = months[match[1].toLocaleLowerCase()];
   const year = match[3];
 
-  return `${year}-${month}-${date}T05:00:00.000Z`;
+  const str = `${year}-${month}-${date}`;
+
+  try {
+    return new Date(`${str}T05:00:00.000Z`).toISOString();
+  } catch (err) {
+    throw new Error(`dateParser: Invalid time value '${str}'`);
+  }
 }
