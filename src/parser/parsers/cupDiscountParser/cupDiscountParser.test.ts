@@ -1,6 +1,6 @@
-import { CupDiscount } from "../../models/ref-price";
-import { exampleContent } from "../exampleContent";
-import { cupDiscountParser } from "./cupDiscountParser";
+import { CupDiscount } from "../../../models/ref-price";
+import { exampleContent } from "../../exampleContent";
+import { cupDiscountParser } from ".";
 
 it("should return cup discount", () => {
   const parsed = cupDiscountParser(exampleContent);

@@ -3,7 +3,7 @@ import {
   premiumRefPriceParser,
   lowQualityRefPricePerPointParser,
   baseYieldFactorParser,
-} from "./baseParsers";
+} from ".";
 
 function toTupleWithFormattedValue(value: number) {
   return [value.toLocaleString(), value];

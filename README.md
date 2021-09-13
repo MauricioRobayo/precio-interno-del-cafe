@@ -12,7 +12,7 @@ Loop until we get a 200 response, reached max number of retries, or reached cert
 
 # Precio interno del café
 
-- [x] Parser - Should also parse the date
+- [x] Parser
 - [x] Uploader
 - [ ] refPriceRepository
 

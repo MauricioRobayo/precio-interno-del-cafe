@@ -1,4 +1,4 @@
-import { createBaseParser } from "./createParser";
+import { createBaseParser } from "../createParser";
 
 export const premiumRefPriceParser = createBaseParser(
   /Precio total por carga.*?(\d{0,3},?\d{3},\d{3})/
