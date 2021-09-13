@@ -1,4 +1,4 @@
-import { CitiesRefPrice } from "../../models/RefPriceStorage";
+import { CitiesRefPrice } from "../../models/ref-price";
 import { createExtendedParser } from "./createParser";
 
 const accentInsensitive = (str: string): string =>

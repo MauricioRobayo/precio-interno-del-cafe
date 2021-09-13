@@ -13,7 +13,7 @@ export function getEnvVars(vars: string[]): Record<string, string> {
   }
 
   if (missingEnvVars.length > 0) {
-    console.log("ERROR! Missing env vars:", missingEnvVars.join("\n\t"));
+    console.error("ERROR! Missing env vars:", missingEnvVars.join("\n\t"));
     process.exit(1);
   }
 

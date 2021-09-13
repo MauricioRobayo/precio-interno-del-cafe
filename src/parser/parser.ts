@@ -1,6 +1,6 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
 import fs from "fs/promises";
-import { RefPriceStorage } from "../models/RefPriceStorage";
+import { RefPriceStorage } from "../models/ref-price";
 import {
   citiesParser,
   cupDiscountParser,
@@ -8,7 +8,9 @@ import {
   internalParser,
 } from "./parsers";
 
-export async function parser(pdfPath: string): Promise<RefPriceStorage> {
+export async function parser(
+  pdfPath: string
+): Promise<RefPriceStorage["refPrice"]> {
   const content = await getContent(pdfPath);
   return {
     cities: citiesParser(content),

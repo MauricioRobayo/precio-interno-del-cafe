@@ -29,8 +29,12 @@ export type CupDiscount = Record<
   number[]
 >;
 export interface RefPriceStorage {
-  external: ExternalRefPrice;
-  internal: InternalRefPrice;
-  cities: CitiesRefPrice;
-  cupDiscount: CupDiscount;
+  etag: string;
+  lastModified: string;
+  refPrice: {
+    external: ExternalRefPrice;
+    internal: InternalRefPrice;
+    cities: CitiesRefPrice;
+    cupDiscount: CupDiscount;
+  };
 }

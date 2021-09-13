@@ -16,9 +16,32 @@ Implemented.
 
 ## Uploader
 
-- Upload to GCP storage
+https://www.coralnodes.com/amazon-s3-alternatives/
+
+Should export a single method `uploadToStorage(file)` which is a wrapper over a single storage:
+
+```
+function uploadToStorage(file) {
+  return toGCS(file)
+}
+```
+
+```
+uploader
+├── index.ts // exports `upload` function
+├── uploadToStorage.ts // wrapper over the multiple uploaders
+└── uploaders
+    ├── index.ts
+    ├── toGCS.ts
+    ├── toS3
+    └── ...
+```
 
 ## refPriceRepository
 
 - getETag
 - save
+
+```
+
+```
