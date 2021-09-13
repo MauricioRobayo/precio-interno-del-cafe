@@ -9,10 +9,10 @@ it("Should throw an error if no match", () => {
 });
 
 const cases = [
-  ["Septiembre 02 / 2021", "2021-09-02"],
-  ["Septiembre 02/2021", "2021-09-02"],
-  ["Septiembre 2/2021", "2021-09-02"],
-  ["Enero 30 / 2020", "2020-01-30"],
+  ["Septiembre 02 / 2021", "2021-09-02T00:00:00.000-05:00"],
+  ["Septiembre 02/2021", "2021-09-02T00:00:00.000-05:00"],
+  ["Septiembre 2/2021", "2021-09-02T00:00:00.000-05:00"],
+  ["Enero 30 / 2020", "2020-01-30T00:00:00.000-05:00"],
 ];
 
 it.each(cases)(
@@ -21,6 +21,6 @@ it.each(cases)(
     const testContent = `${localDate}La Federación Nacional de Cafeteros de Colombia ofrece`;
     const date = dateParser(testContent);
 
-    expect(date).toBe(new Date(expectedDate).getTime());
+    expect(date).toBe(new Date(expectedDate).toISOString());
   }
 );
