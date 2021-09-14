@@ -32,7 +32,7 @@ export interface RefPriceStorage {
   etag: string;
   lastModified: string;
   createdAt: number;
-  pdfCreationDate: number;
+  pdfInfo: unknown;
   fileName: string;
   refPrice: {
     date: string;
