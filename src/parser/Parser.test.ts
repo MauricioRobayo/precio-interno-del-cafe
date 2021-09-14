@@ -1,11 +1,17 @@
 import path from "path";
 import { getContent, getPdfDocumentProxy, parser } from "./parser";
 import { exampleContent } from "./exampleContent";
+import fs from "fs/promises";
 
-const pdfPath = path.join(__dirname, "example.pdf");
+let data: Buffer;
+
+beforeAll(async () => {
+  const pdfPath = path.join(__dirname, "example.pdf");
+  data = Buffer.from(await fs.readFile(pdfPath));
+});
 
 it("should return a reference price object", async () => {
-  const { parsedContent } = await parser(pdfPath);
+  const { parsedContent } = await parser(data);
 
   expect(parsedContent.date).toBe(
     new Date("2021-09-02T00:00:00.000-05:00").toISOString()
@@ -62,7 +68,7 @@ it("should return a reference price object", async () => {
 });
 
 it("should get the text content of a pdf file replacing multiple spaces with one space", async () => {
-  const pdfDocumentProxy = await getPdfDocumentProxy(pdfPath);
+  const pdfDocumentProxy = await getPdfDocumentProxy(data);
   const content = await getContent(pdfDocumentProxy);
 
   expect(content).toBe(exampleContent);
