@@ -1,27 +1,19 @@
 # Precio interno del café
 
-- [x] Parser
-- [x] Uploader
-- [x] Downloader
-- [ ] refPriceRepository
+Downloads, parses, and saves [_Precio Interno de Referencia_](https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf) pdf files from the [Federación Nacional de Cafeteros](https://federaciondecafeteros.org).
 
-## refPriceRepository
+#### Download
 
-Should implement two methods:
+Download the file using exponential back-off and ETag `If-Not-Modified` header.
 
-- `getLatest(): Promise<RefPriceStorage>`
-- `save(refPrice: RefPriceStorage): Promise<id>`
+#### Parse
 
-`Etag` should work as an external Id.
+Extracts relevant information and saves it in a MongoDb document.
 
-Use MongoDb.
+#### Save
 
----
+Save the downloaded document on the cloud.
 
-```
-const {eTag} = repo.getLatest();
-downloader(eTag, 'destFile.pdf')
-uploader('destFile.pdf')
-const data = parser('destFile.pdf')
-repo.save(data);
-```
+## LICENSE
+
+[MIT](LICENSE)
