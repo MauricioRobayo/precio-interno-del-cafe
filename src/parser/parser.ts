@@ -8,29 +8,34 @@ import {
   externalParser,
   internalParser,
 } from "./parsers";
+import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
+import { Metadata } from "pdfjs-dist/types/display/metadata";
 
 export async function parser(
   pdfPath: string
-): Promise<RefPriceStorage["refPrice"]> {
-  const content = await getContent(pdfPath);
+): Promise<{ metadata: Metadata; parsedContent: RefPriceStorage["refPrice"] }> {
+  const pdfDocumentProxy = await getPdfDocumentProxy(pdfPath);
+  const { metadata, info } = await getMetadata(pdfDocumentProxy);
+  console.log({ metadata, info });
+  const content = await getContent(pdfDocumentProxy);
   return {
-    date: dateParser(content),
-    cities: citiesParser(content),
-    cupDiscount: cupDiscountParser(content),
-    external: externalParser(content),
-    internal: internalParser(content),
+    metadata,
+    parsedContent: {
+      date: dateParser(content),
+      cities: citiesParser(content),
+      cupDiscount: cupDiscountParser(content),
+      external: externalParser(content),
+      internal: internalParser(content),
+    },
   };
 }
 
-export async function getContent(pdfPath: string): Promise<string> {
-  const arraybuffer = await fs.readFile(pdfPath);
-
-  const pdf = getDocument(arraybuffer);
-  const doc = await pdf.promise;
-
+export async function getContent(
+  pdfDocumentProxy: PDFDocumentProxy
+): Promise<string> {
   const pageNumbers = Array.from({ length: 2 }, (_, i) => i + 1);
   const contentsPromises = pageNumbers.map(async (pageNumber) => {
-    const page = await doc.getPage(pageNumber);
+    const page = await pdfDocumentProxy.getPage(pageNumber);
     const content = await page.getTextContent();
     return content.items
       .map((item) => ("str" in item ? item.str : ""))
@@ -39,4 +44,15 @@ export async function getContent(pdfPath: string): Promise<string> {
 
   const contents = await Promise.all(contentsPromises);
   return contents.join("").replace(/\s+/g, " ");
+}
+
+function getMetadata(pdfDocumentProxy: PDFDocumentProxy) {
+  return pdfDocumentProxy.getMetadata();
+}
+
+async function getPdfDocumentProxy(pdfPath: string): Promise<PDFDocumentProxy> {
+  const arraybuffer = await fs.readFile(pdfPath);
+
+  const pdf = getDocument(arraybuffer);
+  return pdf.promise;
 }
