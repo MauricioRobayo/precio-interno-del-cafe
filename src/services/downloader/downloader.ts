@@ -91,6 +91,12 @@ export class FileDownloader {
       const randomDeltaMs = randBetween(60 * 1000, 4 * 60 * 1000);
       delayMs = (delayMs + randomDeltaMs) * 2;
 
+      console.log("downloadFileWithExponentialBackOff", {
+        delayMs,
+        elapseTimeMs,
+        retries,
+      });
+
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
