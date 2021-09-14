@@ -1,11 +1,11 @@
-name: Download, parse, and save pdf file
+name: Process coffee reference price
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 19 * * 1-5" # 14:00pm UTC-5
 
 jobs:
-  say_hello:
+  process-pdf-file:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,4 +15,4 @@ jobs:
           cache: "npm"
       - run: npm install
       - run: npm run build
-      - run: npm run getPdfFile
+      - run: npm run processRefPrice

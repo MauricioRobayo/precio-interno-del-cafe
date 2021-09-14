@@ -4,7 +4,7 @@ import { parser } from "../../parser";
 
 const repo = new RefPriceRepository();
 
-async function getRefPrice(): Promise<void> {
+async function processRefPrice(): Promise<void> {
   try {
     const latestRefPrice = await repo.getLatest();
     const fd = new FileDownloader(latestRefPrice?.etag);
@@ -54,4 +54,4 @@ async function getRefPrice(): Promise<void> {
   process.exit(1);
 }
 
-getRefPrice();
+processRefPrice();

@@ -10,7 +10,7 @@
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "test": "jest",
-    "getPdfFile": "node dist/scripts/getRefPrice/index.js"
+    "processRefPrice": "node dist/scripts/processRefPrice/index.js"
   },
   "engines": {
     "node": ">=14"
