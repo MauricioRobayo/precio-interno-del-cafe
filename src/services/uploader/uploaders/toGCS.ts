@@ -1,8 +1,5 @@
 import { Storage } from "@google-cloud/storage";
-import dotenv from "dotenv";
 import { getEnvVars } from "../../../shared";
-
-dotenv.config();
 
 const bucketName = "ref-price";
 const gcpEnvVars = getEnvVars([

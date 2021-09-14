@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import { FileDownloader, uploadFile } from "../../services";
 import { RefPriceRepository } from "../../repositories";
 import { parser } from "../../parser";

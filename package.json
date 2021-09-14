@@ -33,7 +33,6 @@
   "dependencies": {
     "@google-cloud/storage": "^5.14.0",
     "axios": "^0.21.1",
-    "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.1",
     "pdfjs-dist": "^2.9.359"
