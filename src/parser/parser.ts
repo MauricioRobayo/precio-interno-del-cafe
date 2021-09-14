@@ -1,6 +1,6 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
 import fs from "fs/promises";
-import { RefPriceStorage } from "../models/ref-price";
+import { RefPriceStorage } from "../models/ref-price-model";
 import {
   citiesParser,
   cupDiscountParser,
