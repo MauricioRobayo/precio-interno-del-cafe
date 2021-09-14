@@ -32,6 +32,8 @@ export interface RefPriceStorage {
   etag: string;
   lastModified: string;
   createdAt: number;
+  pdfCreationDate: number;
+  fileName: string;
   refPrice: {
     date: string;
     external: ExternalRefPrice;
