@@ -9,14 +9,17 @@ export enum StatusCode {
 const fileUrl =
   "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf";
 
-export class FileDownloader {
-  constructor(private etag: string | null, private destFile: string) {}
+interface DownloadResult {
+  status: StatusCode;
+  etag: string;
+  lastModified: string;
+  fileName: string;
+}
 
-  async downloadFile(): Promise<{
-    status: StatusCode;
-    etag: string;
-    lastModified: string;
-  } | null> {
+export class FileDownloader {
+  constructor(private etag: string | null) {}
+
+  async downloadFile(): Promise<DownloadResult | null> {
     const headers: { [k: string]: string } = {};
 
     if (this.etag) {
@@ -32,11 +35,15 @@ export class FileDownloader {
         headers,
       });
 
-      fs.writeFile(this.destFile, Buffer.from(data));
+      const fileName = `${etag.replace(/"/g, "")}.pdf`;
+      fs.writeFile(fileName, Buffer.from(data));
 
-      console.log({ etag, lastModified });
-
-      return { status: StatusCode.success, etag, lastModified };
+      return {
+        etag,
+        fileName,
+        lastModified,
+        status: StatusCode.success,
+      };
     } catch (err) {
       if (
         axios.isAxiosError(err) &&
@@ -51,35 +58,39 @@ export class FileDownloader {
 
   async downloadFileWithExponentialBackOff(
     maxExecutionTime = 8 * 60 * 60 * 1000
-  ): Promise<{
-    status: StatusCode;
-    etag: string;
-    lastModified: string;
-  } | null> {
+  ): Promise<
+    | (DownloadResult & {
+        retries: number;
+        elapseTimeMs: number;
+      })
+    | null
+  > {
     let delayMs = 0;
     let retries = 0;
     const startTime = Date.now();
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const response = await this.downloadFile();
+      const downloadResult = await this.downloadFile();
+      const elapseTimeMs = Date.now() - startTime;
 
-      if (response?.status === StatusCode.success) {
-        return response;
+      if (downloadResult?.status === StatusCode.success) {
+        return {
+          ...downloadResult,
+          retries,
+          elapseTimeMs,
+        };
       }
 
-      const elapseTime = Date.now() - startTime;
-      if (elapseTime >= maxExecutionTime) {
-        console.log(`Max execution time reached. Tried for ${elapseTime}ms`);
+      if (elapseTimeMs >= maxExecutionTime) {
+        console.warn(`Max execution time reached. Tried for ${elapseTimeMs}ms`);
         return null;
       }
 
       retries = retries + 1;
 
-      const randomDeltaMs = randBetween(60 * 1000, 120 * 1000);
+      const randomDeltaMs = randBetween(60 * 1000, 4 * 60 * 1000);
       delayMs = (delayMs + randomDeltaMs) * 2;
-
-      console.log({ delayMs, retries });
 
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
