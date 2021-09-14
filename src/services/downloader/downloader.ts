@@ -1,23 +1,28 @@
 import axios from "axios";
 import fs from "fs/promises";
 
-export enum StatusCode {
-  success = 200,
-  notModified = 304,
-}
-
 const fileUrl =
   "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf";
 
 interface DownloadResult {
-  status: StatusCode;
   etag: string;
   lastModified: string;
   fileName: string;
 }
 
+interface ExponentialBackOffResult {
+  elapseTimeMs: number;
+  maxExecutionExceeded: boolean;
+  maxExecutionTime: number;
+  retries: number;
+  status: "success" | "failed";
+}
+
+type SuccessfulExponentialBackOffResult = DownloadResult &
+  ExponentialBackOffResult;
+
 export class FileDownloader {
-  constructor(private etag: string | null) {}
+  constructor(private etag?: string) {}
 
   async downloadFile(): Promise<DownloadResult | null> {
     const headers: { [k: string]: string } = {};
@@ -42,13 +47,9 @@ export class FileDownloader {
         etag,
         fileName,
         lastModified,
-        status: StatusCode.success,
       };
     } catch (err) {
-      if (
-        axios.isAxiosError(err) &&
-        err.response?.status === StatusCode.notModified
-      ) {
+      if (axios.isAxiosError(err) && err.response?.status === 304) {
         return null;
       }
 
@@ -58,13 +59,7 @@ export class FileDownloader {
 
   async downloadFileWithExponentialBackOff(
     maxExecutionTime = 8 * 60 * 60 * 1000
-  ): Promise<
-    | (DownloadResult & {
-        retries: number;
-        elapseTimeMs: number;
-      })
-    | null
-  > {
+  ): Promise<SuccessfulExponentialBackOffResult | ExponentialBackOffResult> {
     let delayMs = 0;
     let retries = 0;
     const startTime = Date.now();
@@ -74,17 +69,25 @@ export class FileDownloader {
       const downloadResult = await this.downloadFile();
       const elapseTimeMs = Date.now() - startTime;
 
-      if (downloadResult?.status === StatusCode.success) {
+      if (downloadResult) {
         return {
           ...downloadResult,
-          retries,
           elapseTimeMs,
+          maxExecutionExceeded: false,
+          maxExecutionTime,
+          retries,
+          status: "success",
         };
       }
 
       if (elapseTimeMs >= maxExecutionTime) {
-        console.warn(`Max execution time reached. Tried for ${elapseTimeMs}ms`);
-        return null;
+        return {
+          elapseTimeMs,
+          maxExecutionExceeded: true,
+          maxExecutionTime,
+          retries,
+          status: "failed",
+        };
       }
 
       retries = retries + 1;
@@ -94,6 +97,12 @@ export class FileDownloader {
 
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
+  }
+
+  static isSuccessfulExponentialBackOffResult(
+    result: SuccessfulExponentialBackOffResult | ExponentialBackOffResult
+  ): result is SuccessfulExponentialBackOffResult {
+    return result.status === "success";
   }
 }
 
