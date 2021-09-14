@@ -15,4 +15,19 @@ jobs:
           cache: "npm"
       - run: npm install
       - run: npm run build
-      - run: npm run processRefPrice
+      - name: processRefPrice
+        env:
+          GCP_CREDENTIAL_TYPE: ${{ secrets.GCP_CREDENTIAL_TYPE }}
+          GCP_CREDENTIAL_PROJECT_ID: ${{ secrets.GCP_CREDENTIAL_PROJECT_ID }}
+          GCP_CREDENTIAL_PRIVATE_KEY_ID: ${{ secrets.GCP_CREDENTIAL_PRIVATE_KEY_ID }}
+          GCP_CREDENTIAL_PRIVATE_KEY: ${{ secrets.GCP_CREDENTIAL_PRIVATE_KEY }}
+          GCP_CREDENTIAL_CLIENT_EMAIL: ${{ secrets.GCP_CREDENTIAL_CLIENT_EMAIL }}
+          GCP_CREDENTIAL_CLIENT_ID: ${{ secrets.GCP_CREDENTIAL_CLIENT_ID }}
+          GCP_CREDENTIAL_AUTH_URI: ${{ secrets.GCP_CREDENTIAL_AUTH_URI }}
+          GCP_CREDENTIAL_TOKEN_URI: ${{ secrets.GCP_CREDENTIAL_TOKEN_URI }}
+          GCP_CREDENTIAL_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.GCP_CREDENTIAL_AUTH_PROVIDER_X509_CERT_URL }}
+          GCP_CREDENTIAL_CLIENT_X509_CERT_URL: ${{ secrets.GCP_CREDENTIAL_CLIENT_X509_CERT_URL }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          MONGODB_COLLECTION: ${{ secrets.MONGODB_COLLECTION }}
+        run: npm run processRefPrice
