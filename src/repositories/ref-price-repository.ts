@@ -20,7 +20,7 @@ export class RefPriceRepository {
 
     const refPriceArray = await collection
       .find()
-      .sort({ _id: -1 })
+      .sort({ "refPrice.date": -1 })
       .limit(1)
       .toArray();
 
