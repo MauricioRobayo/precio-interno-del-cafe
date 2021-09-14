@@ -31,6 +31,7 @@ export type CupDiscount = Record<
 export interface RefPriceStorage {
   etag: string;
   lastModified: string;
+  createdAt: number;
   refPrice: {
     date: string;
     external: ExternalRefPrice;
