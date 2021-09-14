@@ -9,7 +9,8 @@
     "watch": "tsc --watch",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "getPdfFile": "node dist/scripts/getRefPrice/index.js"
   },
   "engines": {
     "node": ">=14"
