@@ -1,4 +1,4 @@
-import { CupDiscount } from "../../../models/ref-price";
+import { CupDiscount } from "../../../models/ref-price-model";
 import { exampleContent } from "../../exampleContent";
 import { cupDiscountParser } from ".";
 

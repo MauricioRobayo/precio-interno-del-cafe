@@ -1,6 +1,6 @@
 import { externalParser } from ".";
 import { exampleContent } from "../../exampleContent";
-import { ExternalRefPrice } from "../../../models/ref-price";
+import { ExternalRefPrice } from "../../../models/ref-price-model";
 
 it("should return external reference price", () => {
   const parsed = externalParser(exampleContent);
