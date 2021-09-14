@@ -73,6 +73,3 @@ export class FileDownloader {
 function randBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
-
-const fd = new FileDownloader('"1a53c-5cbe534fe8477"', "test.pdf");
-fd.downloadFileWithExponentialBackOff();
