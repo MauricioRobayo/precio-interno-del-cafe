@@ -15,14 +15,14 @@ const gcpEnvVars = getEnvVars([
   "GCP_CREDENTIAL_CLIENT_X509_CERT_URL",
 ]);
 
-const storage = new Storage({
-  credentials: Object.fromEntries(
-    Object.entries(gcpEnvVars).map(([key, value]) => [
-      key.replace("GCP_CREDENTIAL_", "").toLowerCase(),
-      value,
-    ])
-  ),
-});
+const credentials = Object.fromEntries(
+  Object.entries(gcpEnvVars).map(([key, value]) => [
+    key.replace("GCP_CREDENTIAL_", "").toLowerCase(),
+    value,
+  ])
+);
+
+const storage = new Storage({ credentials });
 
 export async function toGCS(data: Buffer, destName: string): Promise<void> {
   await storage.bucket(bucketName).file(destName).save(data);
