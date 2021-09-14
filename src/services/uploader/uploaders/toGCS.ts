@@ -4,25 +4,28 @@ import { getEnvVars } from "../../../shared";
 
 dotenv.config();
 
-const bucketName = "precio-interno-del-cafe";
-const envVarPrefix = "GCP_CREDENTIAL_";
-const credentialProperties = [
-  "type",
-  "project_id",
-  "private_key_id",
-  "private_key",
-  "client_email",
-  "client_id",
-  "auth_uri",
-  "token_uri",
-  "auth_provider_x509_cert_url",
-  "client_x509_cert_url",
-];
-const requiredEnvVars = credentialProperties.map((property) =>
-  `${envVarPrefix}${property}`.toUpperCase()
-);
-const credentials = getEnvVars(requiredEnvVars);
-const storage = new Storage({ credentials });
+const bucketName = "ref-price";
+const gcpEnvVars = getEnvVars([
+  "GCP_CREDENTIAL_TYPE",
+  "GCP_CREDENTIAL_PROJECT_ID",
+  "GCP_CREDENTIAL_PRIVATE_KEY_ID",
+  "GCP_CREDENTIAL_PRIVATE_KEY",
+  "GCP_CREDENTIAL_CLIENT_EMAIL",
+  "GCP_CREDENTIAL_CLIENT_ID",
+  "GCP_CREDENTIAL_AUTH_URI",
+  "GCP_CREDENTIAL_TOKEN_URI",
+  "GCP_CREDENTIAL_AUTH_PROVIDER_X509_CERT_URL",
+  "GCP_CREDENTIAL_CLIENT_X509_CERT_URL",
+]);
+
+const storage = new Storage({
+  credentials: Object.fromEntries(
+    Object.entries(gcpEnvVars).map(([key, value]) => [
+      key.replace("GCP_CREDENTIAL_", "").toLowerCase(),
+      value,
+    ])
+  ),
+});
 
 export async function toGCS(fileName: string, destName = ""): Promise<void> {
   try {
