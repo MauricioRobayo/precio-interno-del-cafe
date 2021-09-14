@@ -10,14 +10,20 @@ beforeAll(async () => {
   data = Buffer.from(await fs.readFile(pdfPath));
 });
 
-it("should return a reference price object", async () => {
-  const { parsedContent } = await parser(data);
+it("should return the content as a string", async () => {
+  const { content } = await parser(data);
 
-  expect(parsedContent.date).toBe(
+  expect(content).toBe(exampleContent);
+});
+
+it("should return a reference price object", async () => {
+  const { refPrice } = await parser(data);
+
+  expect(refPrice.date).toBe(
     new Date("2021-09-02T00:00:00.000-05:00").toISOString()
   );
 
-  expect(parsedContent.internal).toEqual(
+  expect(refPrice.internal).toEqual(
     expect.objectContaining({
       lowQuality: expect.any(Number),
       lowQualityPerPoint: expect.any(Number),
@@ -26,7 +32,7 @@ it("should return a reference price object", async () => {
     })
   );
 
-  expect(parsedContent.external).toEqual(
+  expect(refPrice.external).toEqual(
     expect.objectContaining({
       nyCFirst: expect.any(Number),
       nyCSecond: expect.any(Number),
@@ -34,7 +40,7 @@ it("should return a reference price object", async () => {
     })
   );
 
-  expect(parsedContent.cities).toEqual(
+  expect(refPrice.cities).toEqual(
     expect.objectContaining({
       armenia: expect.any(Number),
       bogota: expect.any(Number),
@@ -55,10 +61,10 @@ it("should return a reference price object", async () => {
     })
   );
 
-  Object.values(parsedContent.cupDiscount).forEach((value) => {
+  Object.values(refPrice.cupDiscount).forEach((value) => {
     expect(value.length).toBe(8);
   });
-  expect(parsedContent.cupDiscount).toEqual(
+  expect(refPrice.cupDiscount).toEqual(
     expect.objectContaining({
       typeIQ1: expect.arrayContaining([expect.any(Number)]),
       typeIIQ2: expect.arrayContaining([expect.any(Number)]),

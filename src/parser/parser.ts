@@ -10,19 +10,19 @@ import {
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { Metadata } from "pdfjs-dist/types/display/metadata";
 
-export async function parser(data: Buffer): Promise<{
-  pdfInfo: { [k: string]: unknown };
-  parsedContent: RefPriceStorage["refPrice"];
-}> {
+export async function parser(
+  data: Buffer
+): Promise<Pick<RefPriceStorage, "content" | "pdfInfo" | "refPrice">> {
   const pdfDocumentProxy = await getPdfDocumentProxy(data);
   const pdfInfo = await getMetadata(pdfDocumentProxy);
   const content = await getContent(pdfDocumentProxy);
   return {
+    content,
     pdfInfo,
-    parsedContent: {
-      date: dateParser(content),
+    refPrice: {
       cities: citiesParser(content),
       cupDiscount: cupDiscountParser(content),
+      date: dateParser(content),
       external: externalParser(content),
       internal: internalParser(content),
     },

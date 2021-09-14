@@ -22,16 +22,17 @@ async function processRefPrice(): Promise<void> {
       let fileName = "";
 
       try {
-        const parsedData = await parser(data);
-        fileName = `${parsedData.parsedContent.date.slice(0, 10)}.pdf`;
+        const { pdfInfo, content, refPrice } = await parser(data);
+        fileName = `${refPrice.date.slice(0, 10)}.pdf`;
 
         await repo.save({
-          etag: etag,
-          lastModified: lastModified,
+          content,
           createdAt: Date.now(),
+          etag,
           fileName,
-          pdfInfo: parsedData.pdfInfo,
-          refPrice: parsedData.parsedContent,
+          lastModified,
+          pdfInfo,
+          refPrice,
         });
       } catch (err) {
         console.log("getRefPrice: parsing pdf file failed", err);

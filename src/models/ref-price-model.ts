@@ -28,17 +28,19 @@ export type CupDiscount = Record<
   "typeIQ1" | "typeIIQ2" | "typeIIIQ3",
   number[]
 >;
+export interface RefPrice {
+  cities: CitiesRefPrice;
+  cupDiscount: CupDiscount;
+  date: string;
+  external: ExternalRefPrice;
+  internal: InternalRefPrice;
+}
 export interface RefPriceStorage {
-  etag: string;
-  lastModified: string;
+  content: string;
   createdAt: number;
-  pdfInfo: unknown;
+  etag: string;
   fileName: string;
-  refPrice: {
-    date: string;
-    external: ExternalRefPrice;
-    internal: InternalRefPrice;
-    cities: CitiesRefPrice;
-    cupDiscount: CupDiscount;
-  };
+  lastModified: string;
+  pdfInfo: unknown;
+  refPrice: RefPrice;
 }
