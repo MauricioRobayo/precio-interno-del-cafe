@@ -14,6 +14,8 @@ Should implement two methods:
 
 `Etag` should work as an external Id.
 
+Use MongoDb.
+
 ---
 
 ```

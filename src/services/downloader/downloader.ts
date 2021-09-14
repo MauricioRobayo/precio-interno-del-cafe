@@ -1,13 +1,12 @@
 import axios from "axios";
-import fs from "fs/promises";
 
 const fileUrl =
   "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf";
 
 interface DownloadResult {
+  data: ArrayBuffer;
   etag: string;
   lastModified: string;
-  fileName: string;
 }
 
 interface ExponentialBackOffResult {
@@ -40,12 +39,9 @@ export class FileDownloader {
         headers,
       });
 
-      const fileName = `${etag.replace(/"/g, "")}.pdf`;
-      fs.writeFile(fileName, Buffer.from(data));
-
       return {
+        data,
         etag,
-        fileName,
         lastModified,
       };
     } catch (err) {

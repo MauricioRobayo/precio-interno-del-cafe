@@ -10,14 +10,18 @@ const repo = new RefPriceRepository();
 async function getRefPrice(): Promise<void> {
   const latestRefPrice = await repo.getLatest();
 
-  const fd = new FileDownloader(latestRefPrice?.etag);
+  const fd = new FileDownloader(
+    Math.random() > 0 ? undefined : latestRefPrice?.etag
+  );
 
   const downloadResult = await fd.downloadFileWithExponentialBackOff();
+
+  console.log(downloadResult);
 
   if (FileDownloader.isSuccessfulExponentialBackOffResult(downloadResult)) {
     const { fileName, etag, lastModified } = downloadResult;
 
-    await uploadFile(fileName);
+    // await uploadFile(fileName);
 
     const parsedData = await parser(fileName);
 
