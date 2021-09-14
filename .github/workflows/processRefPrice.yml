@@ -1,11 +1,11 @@
-name: Process coffee reference price
+name: coffee reference price
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 19 * * 1-5" # 14:00pm UTC-5
 
 jobs:
-  process-ref-file:
+  process-ref-price:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
