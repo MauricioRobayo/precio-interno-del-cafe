@@ -11,15 +11,15 @@ import {
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { Metadata } from "pdfjs-dist/types/display/metadata";
 
-export async function parser(
-  pdfPath: string
-): Promise<{ metadata: Metadata; parsedContent: RefPriceStorage["refPrice"] }> {
+export async function parser(pdfPath: string): Promise<{
+  pdfInfo: { [k: string]: unknown };
+  parsedContent: RefPriceStorage["refPrice"];
+}> {
   const pdfDocumentProxy = await getPdfDocumentProxy(pdfPath);
-  const { metadata, info } = await getMetadata(pdfDocumentProxy);
-  console.log({ metadata, info });
+  const pdfInfo = await getMetadata(pdfDocumentProxy);
   const content = await getContent(pdfDocumentProxy);
   return {
-    metadata,
+    pdfInfo,
     parsedContent: {
       date: dateParser(content),
       cities: citiesParser(content),
@@ -46,11 +46,15 @@ export async function getContent(
   return contents.join("").replace(/\s+/g, " ");
 }
 
-function getMetadata(pdfDocumentProxy: PDFDocumentProxy) {
+export function getMetadata(
+  pdfDocumentProxy: PDFDocumentProxy
+): Promise<{ info: unknown; metadata: Metadata }> {
   return pdfDocumentProxy.getMetadata();
 }
 
-async function getPdfDocumentProxy(pdfPath: string): Promise<PDFDocumentProxy> {
+export async function getPdfDocumentProxy(
+  pdfPath: string
+): Promise<PDFDocumentProxy> {
   const arraybuffer = await fs.readFile(pdfPath);
 
   const pdf = getDocument(arraybuffer);

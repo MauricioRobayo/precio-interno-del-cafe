@@ -1,17 +1,17 @@
 import path from "path";
-import { getContent, parser } from "./parser";
+import { getContent, getPdfDocumentProxy, parser } from "./parser";
 import { exampleContent } from "./exampleContent";
 
 const pdfPath = path.join(__dirname, "example.pdf");
 
 it("should return a reference price object", async () => {
-  const refPrice = await parser(pdfPath);
+  const { parsedContent } = await parser(pdfPath);
 
-  expect(refPrice.date).toBe(
+  expect(parsedContent.date).toBe(
     new Date("2021-09-02T00:00:00.000-05:00").toISOString()
   );
 
-  expect(refPrice.internal).toEqual(
+  expect(parsedContent.internal).toEqual(
     expect.objectContaining({
       lowQuality: expect.any(Number),
       lowQualityPerPoint: expect.any(Number),
@@ -20,7 +20,7 @@ it("should return a reference price object", async () => {
     })
   );
 
-  expect(refPrice.external).toEqual(
+  expect(parsedContent.external).toEqual(
     expect.objectContaining({
       nyCFirst: expect.any(Number),
       nyCSecond: expect.any(Number),
@@ -28,7 +28,7 @@ it("should return a reference price object", async () => {
     })
   );
 
-  expect(refPrice.cities).toEqual(
+  expect(parsedContent.cities).toEqual(
     expect.objectContaining({
       armenia: expect.any(Number),
       bogota: expect.any(Number),
@@ -49,10 +49,10 @@ it("should return a reference price object", async () => {
     })
   );
 
-  Object.values(refPrice.cupDiscount).forEach((value) => {
+  Object.values(parsedContent.cupDiscount).forEach((value) => {
     expect(value.length).toBe(8);
   });
-  expect(refPrice.cupDiscount).toEqual(
+  expect(parsedContent.cupDiscount).toEqual(
     expect.objectContaining({
       typeIQ1: expect.arrayContaining([expect.any(Number)]),
       typeIIQ2: expect.arrayContaining([expect.any(Number)]),
@@ -62,7 +62,8 @@ it("should return a reference price object", async () => {
 });
 
 it("should get the text content of a pdf file replacing multiple spaces with one space", async () => {
-  const content = await getContent(pdfPath);
+  const pdfDocumentProxy = await getPdfDocumentProxy(pdfPath);
+  const content = await getContent(pdfDocumentProxy);
 
   expect(content).toBe(exampleContent);
 });
