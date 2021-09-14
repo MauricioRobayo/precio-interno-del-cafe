@@ -1,5 +1,4 @@
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.js";
-import fs from "fs/promises";
 import { RefPriceStorage } from "../models/ref-price-model";
 import {
   citiesParser,
@@ -11,11 +10,11 @@ import {
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { Metadata } from "pdfjs-dist/types/display/metadata";
 
-export async function parser(pdfPath: string): Promise<{
+export async function parser(data: Buffer): Promise<{
   pdfInfo: { [k: string]: unknown };
   parsedContent: RefPriceStorage["refPrice"];
 }> {
-  const pdfDocumentProxy = await getPdfDocumentProxy(pdfPath);
+  const pdfDocumentProxy = await getPdfDocumentProxy(data);
   const pdfInfo = await getMetadata(pdfDocumentProxy);
   const content = await getContent(pdfDocumentProxy);
   return {
@@ -53,10 +52,8 @@ export function getMetadata(
 }
 
 export async function getPdfDocumentProxy(
-  pdfPath: string
+  data: Buffer
 ): Promise<PDFDocumentProxy> {
-  const arraybuffer = await fs.readFile(pdfPath);
-
-  const pdf = getDocument(arraybuffer);
+  const pdf = getDocument(data);
   return pdf.promise;
 }

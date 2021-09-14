@@ -27,11 +27,9 @@ const storage = new Storage({
   ),
 });
 
-export async function toGCS(fileName: string, destName = ""): Promise<void> {
+export async function toGCS(data: Buffer, destName: string): Promise<void> {
   try {
-    await storage.bucket(bucketName).upload(fileName, {
-      destination: destName || fileName,
-    });
+    await storage.bucket(bucketName).file(destName).save(data);
   } catch (err) {
     if (err instanceof Error) {
       console.log(err.message);

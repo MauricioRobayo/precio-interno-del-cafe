@@ -4,7 +4,7 @@ const fileUrl =
   "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf";
 
 interface DownloadResult {
-  data: ArrayBuffer;
+  data: Buffer;
   etag: string;
   lastModified: string;
 }
@@ -40,7 +40,7 @@ export class FileDownloader {
       });
 
       return {
-        data,
+        data: Buffer.from(data),
         etag,
         lastModified,
       };

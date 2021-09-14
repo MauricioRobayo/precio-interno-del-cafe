@@ -19,17 +19,19 @@ async function getRefPrice(): Promise<void> {
   console.log(downloadResult);
 
   if (FileDownloader.isSuccessfulExponentialBackOffResult(downloadResult)) {
-    const { fileName, etag, lastModified } = downloadResult;
+    const { data, etag, lastModified } = downloadResult;
 
-    // await uploadFile(fileName);
+    const parsedData = await parser(data);
 
-    const parsedData = await parser(fileName);
+    const fileName = `${parsedData.parsedContent.date.slice(0, 10)}.pdf`;
+
+    await uploadFile(data, fileName);
 
     await repo.save({
       etag: etag,
       lastModified: lastModified,
       createdAt: Date.now(),
-      fileName: downloadResult.fileName,
+      fileName,
       pdfInfo: parsedData.pdfInfo,
       refPrice: parsedData.parsedContent,
     });
