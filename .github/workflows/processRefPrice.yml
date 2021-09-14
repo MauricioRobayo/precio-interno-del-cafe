@@ -5,7 +5,7 @@ on:
     - cron: "0 19 * * 1-5" # 14:00pm UTC-5
 
 jobs:
-  process-pdf-file:
+  process-ref-file:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
