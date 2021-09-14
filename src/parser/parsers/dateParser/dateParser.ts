@@ -1,4 +1,4 @@
-const months: { [k: string]: string } = {
+const monthsMapper: { [k: string]: string } = {
   enero: "01",
   febrero: "02",
   marzo: "03",
@@ -14,18 +14,18 @@ const months: { [k: string]: string } = {
 };
 
 export function dateParser(content: string): string {
-  const match = content.match(/^(\w+) (\d{1,2})\s?\/\s?(\d{4})/);
+  const monthNames = Object.keys(monthsMapper);
+  const regExp = new RegExp(
+    `(${monthNames.join("|")}) (\\d{1,2})\\s?\\/\\s?(\\d{4})`,
+    "i"
+  );
+  const match = content.match(regExp);
 
   if (!match) {
     throw new Error(`dateParser: Could not parse date from '${content}'`);
   }
 
-  const monthLocalName = match[1].toLocaleLowerCase();
-  const month = months[monthLocalName];
-
-  if (!month) {
-    throw new Error(`dateParser: Could not map '${monthLocalName}' to a month`);
-  }
+  const month = monthsMapper[match[1].toLocaleLowerCase()];
 
   const date = match[2].padStart(2, "0");
   const year = match[3];
