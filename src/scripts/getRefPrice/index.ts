@@ -11,7 +11,7 @@ async function getRefPrice(): Promise<void> {
     const downloadResult = await fd.downloadFileWithExponentialBackOff();
     const { retries, elapseTimeMs, status } = downloadResult;
 
-    console.log("downloadResult", {
+    console.log("getRefPrice: downloadResult", {
       elapseTimeMs,
       retries,
       status,
@@ -39,7 +39,7 @@ async function getRefPrice(): Promise<void> {
 
       await uploadFile(data, fileName);
 
-      console.log("Process completed", {
+      console.log("getRefPrice: Process completed", {
         etag,
         fileName,
         lastModified,
@@ -48,7 +48,7 @@ async function getRefPrice(): Promise<void> {
       process.exit();
     }
   } catch (err) {
-    console.log("getRefPrice failed", err);
+    console.log("getRefPrice: failed", err);
   }
 
   process.exit(1);
