@@ -1,7 +1,7 @@
 import axios from "axios";
 import fs from "fs/promises";
 
-enum StatusCode {
+export enum StatusCode {
   success = 200,
   notModified = 304,
 }
@@ -10,27 +10,39 @@ const fileUrl =
   "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe-1.pdf";
 
 export class FileDownloader {
-  constructor(private eTag: string | null, private destFile: string) {}
+  constructor(private etag: string | null, private destFile: string) {}
 
-  async downloadFile(): Promise<StatusCode> {
+  async downloadFile(): Promise<{
+    status: StatusCode;
+    etag: string;
+    lastModified: string;
+  } | null> {
     const headers: { [k: string]: string } = {};
 
-    if (this.eTag) {
-      headers["If-None-Match"] = this.eTag;
+    if (this.etag) {
+      headers["If-None-Match"] = this.etag;
     }
 
     try {
-      const { data } = await axios.get<ArrayBuffer>(fileUrl, {
+      const {
+        data,
+        headers: { etag, "last-modified": lastModified },
+      } = await axios.get<ArrayBuffer>(fileUrl, {
         responseType: "arraybuffer",
         headers,
       });
 
       fs.writeFile(this.destFile, Buffer.from(data));
 
-      return StatusCode.success;
+      console.log({ etag, lastModified });
+
+      return { status: StatusCode.success, etag, lastModified };
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 304) {
-        return StatusCode.notModified;
+      if (
+        axios.isAxiosError(err) &&
+        err.response?.status === StatusCode.notModified
+      ) {
+        return null;
       }
 
       throw new Error(`downloadFile: get request failed ${err}`);
@@ -39,17 +51,21 @@ export class FileDownloader {
 
   async downloadFileWithExponentialBackOff(
     maxExecutionTime = 8 * 60 * 60 * 1000
-  ): Promise<string | null> {
+  ): Promise<{
+    status: StatusCode;
+    etag: string;
+    lastModified: string;
+  } | null> {
     let delayMs = 0;
     let retries = 0;
     const startTime = Date.now();
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const status = await this.downloadFile();
+      const response = await this.downloadFile();
 
-      if (status === StatusCode.success) {
-        return this.destFile;
+      if (response?.status === StatusCode.success) {
+        return response;
       }
 
       const elapseTime = Date.now() - startTime;
