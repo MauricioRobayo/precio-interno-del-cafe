@@ -36,8 +36,3 @@ export async function toGCS(data: Buffer, destName: string): Promise<void> {
 
   await storage.bucket(bucketName).file(destName).save(data);
 }
-
-(async () => {
-  const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
-  toGCS(buf, "test").catch(console.log);
-})();
