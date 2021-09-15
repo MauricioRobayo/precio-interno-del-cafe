@@ -25,5 +25,19 @@ const credentials = Object.fromEntries(
 const storage = new Storage({ credentials });
 
 export async function toGCS(data: Buffer, destName: string): Promise<void> {
+  const fileExists = await storage.bucket(bucketName).file(destName).exists();
+
+  if (fileExists) {
+    console.log(
+      `toGCP: File '${destName}' already in bucket, skipping upload.`
+    );
+    return;
+  }
+
   await storage.bucket(bucketName).file(destName).save(data);
 }
+
+(async () => {
+  const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
+  toGCS(buf, "test").catch(console.log);
+})();
