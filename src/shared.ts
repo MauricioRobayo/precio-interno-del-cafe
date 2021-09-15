@@ -1,6 +1,6 @@
-export function getEnvVars(vars: string[]): Record<string, string> {
+export function getEnvVars(vars: string[]): string[] {
   const missingEnvVars: string[] = [];
-  const envVars: Record<string, string> = {};
+  const envVars: string[] = [];
 
   for (const envVar of vars) {
     const value = process.env[envVar];
@@ -8,7 +8,7 @@ export function getEnvVars(vars: string[]): Record<string, string> {
     if (value === undefined || value === "") {
       missingEnvVars.push(envVar);
     } else {
-      envVars[envVar] = value;
+      envVars.push(value);
     }
   }
 

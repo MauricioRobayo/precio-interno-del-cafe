@@ -1,10 +1,10 @@
 import { Storage } from "@google-cloud/storage";
 import { getEnvVars } from "../../../shared";
 
-const { GCS_BUCKET_NAME } = getEnvVars(["GCS_BUCKET_NAME"]);
+const [bucketName] = getEnvVars(["GCS_BUCKET_NAME"]);
 
 const storage = new Storage();
-const bucket = storage.bucket(GCS_BUCKET_NAME);
+const bucket = storage.bucket(bucketName);
 
 export async function toGCS(data: Buffer, destName: string): Promise<void> {
   const file = bucket.file(destName);

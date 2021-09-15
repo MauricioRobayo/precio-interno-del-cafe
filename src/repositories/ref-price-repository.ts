@@ -2,7 +2,7 @@ import { Collection, InsertOneResult, MongoClient } from "mongodb";
 import { RefPriceStorage } from "../models/ref-price-model";
 import { getEnvVars } from "../shared";
 
-const { MONGODB_URI, MONGODB_DB_NAME, MONGODB_COLLECTION } = getEnvVars([
+const [MONGODB_URI, MONGODB_DB_NAME, MONGODB_COLLECTION] = getEnvVars([
   "MONGODB_URI",
   "MONGODB_DB_NAME",
   "MONGODB_COLLECTION",
