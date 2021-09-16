@@ -1,3 +1,5 @@
+**Moved to [cafetal](https://github.com/MauricioRobayo/cafetal)**
+
 # Precio interno del café
 
 [![coffee reference price](https://github.com/MauricioRobayo/precio-interno-del-cafe/actions/workflows/processRefPrice.yml/badge.svg)](https://github.com/MauricioRobayo/precio-interno-del-cafe/actions/workflows/processRefPrice.yml)
